@@ -446,7 +446,6 @@ function addMile() {
   miles.push({ min: tMin, sec: tSec });
   openCardIdx = miles.length - 1;
   renderMiles();
-  setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 80);
 }
 function deleteMile(idx) {
   miles.splice(idx, 1);
@@ -551,8 +550,12 @@ function renderResults() {
 }
 
 // ─── Init ────────────────────────────────────────────────────────────────────
-document.getElementById('tgt-min').addEventListener('input', renderResults);
-document.getElementById('tgt-sec').addEventListener('input', renderResults);
+['tgt-min', 'tgt-sec'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', renderResults);
+  el.addEventListener('focus', function() { this.select(); });
+  el.addEventListener('touchstart', function() { setTimeout(() => this.select(), 0); }, {passive:true});
+});
 addMile();
 </script>
 </body>
